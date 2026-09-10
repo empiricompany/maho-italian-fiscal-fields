@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!--
+SPDX-FileCopyrightText: 2026 Tony MageMEGA <https://magemega.com>
+SPDX-License-Identifier: AFL-3.0
+-->
+<!--
+    MM_ItalianFiscalFields:
+    - No template overrides are used. The fiscal fields (customer type, Codice Fiscale,
+      PEC email, SdI code) are injected dynamically by address-fields.js right after the
+      country field on both the customer address edit form and the onepage checkout billing
+      form.
+    - The shared JS mm_italianfiscalfields/address-fields.js is added on both
+      handles, together with the page-specific config block (window.MM_ItalianFiscalFieldsConfig):
+      the block provides the module settings, any saved values and the target form(s).
+-->
+<layout>
+    <customer_address_form>
+        <reference name="head">
+            <block type="italianfiscalfields/config_customer_address_config" name="mm_italianfiscalfields_config" />
+            <action method="addJs"><script>mm_italianfiscalfields/address-fields.js</script></action>
+        </reference>
+    </customer_address_form>
+    <checkout_onepage_index>
+        <reference name="head">
+            <block type="italianfiscalfields/config_checkout_onepage_config" name="mm_italianfiscalfields_config" />
+            <action method="addJs"><script>mm_italianfiscalfields/address-fields.js</script></action>
+        </reference>
+    </checkout_onepage_index>
+</layout>

@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!--
+SPDX-FileCopyrightText: 2026 Tony MageMEGA <https://magemega.com>
+SPDX-License-Identifier: AFL-3.0
+-->
+<!--
+    Registers the strings used by mm_italianfiscalfields/address-fields.js
+    in the frontend JS Translator. Without this file the strings never reach
+    Translator.translate() and stay untranslated even when the module CSV
+    (app/locale/it_IT/MM_ItalianFiscalFields.csv) contains them.
+-->
+<jstranslator>
+    <script path="mm_italianfiscalfields/address-fields.js" module="italianfiscalfields">
+        <customer-type translate="message">
+            <message>Customer Type</message>
+        </customer-type>
+        <company translate="message">
+            <message>Company</message>
+        </company>
+        <private translate="message">
+            <message>Private</message>
+        </private>
+        <codice-fiscale translate="message">
+            <message>Codice Fiscale</message>
+        </codice-fiscale>
+        <email-pec translate="message">
+            <message>Email PEC</message>
+        </email-pec>
+        <codice-sdi translate="message">
+            <message>Codice SdI</message>
+        </codice-sdi>
+        <invalid-vat-number-format translate="message">
+            <message>Invalid VAT number format.</message>
+        </invalid-vat-number-format>
+        <invalid-codice-fiscale-format translate="message">
+            <message>Invalid Codice Fiscale format.</message>
+        </invalid-codice-fiscale-format>
+        <invalid-sdi-code translate="message">
+            <message>Invalid SdI code.</message>
+        </invalid-sdi-code>
+        <fill-at-least-one-field translate="message">
+            <message>Fill at least one field between PEC Email and/or SdI code.</message>
+        </fill-at-least-one-field>
+    </script>
+</jstranslator>

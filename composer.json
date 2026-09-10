@@ -1,0 +1,40 @@
+{
+    "name": "empiricompany/maho-italian-fiscal-fields",
+    "description": "Adds Italian fiscal fields (codice fiscale, email PEC, codice SdI) and a private/company selector to customer addresses and checkout billing.",
+    "license": "OSL-3.0",
+    "type": "maho-module",
+    "require": {
+        "php": ">=8.3"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "*",
+        "mahocommerce/maho": "*",
+        "mahocommerce/maho-phpstan-plugin": "*",
+        "phpstan/phpstan": "*",
+        "phpstan/phpstan-deprecation-rules": "*",
+        "phpstan/phpstan-strict-rules": "*",
+        "phpunit/phpunit": "^11.5",
+        "rector/rector": "*"
+    },
+    "config": {
+        "allow-plugins": {
+            "mahocommerce/maho-composer-plugin": true
+        },
+        "platform": {
+            "php": "8.3"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "cs": "vendor/bin/php-cs-fixer fix --dry-run --diff",
+        "cs-fix": "vendor/bin/php-cs-fixer fix",
+        "phpstan": "vendor/bin/phpstan analyse",
+        "rector": "vendor/bin/rector --dry-run",
+        "check": [
+            "@test",
+            "@cs",
+            "@phpstan",
+            "@rector"
+        ]
+    }
+}
