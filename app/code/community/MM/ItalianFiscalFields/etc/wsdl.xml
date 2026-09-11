@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+SPDX-FileCopyrightText: 2026 Tony MageMEGA <https://magemega.com>
+SPDX-License-Identifier: AFL-3.0
+-->
+<!--
+SOAP v2 (non-WSI) WSDL contribution: adds the Italian fiscal fields to the
+existing address complex types. Merged by node name into the core types by
+Mage_Api_Model_Wsdl_Config::init() -> loadModulesConfiguration('wsdl.xml').
+-->
+<definitions xmlns:typens="urn:Maho" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns="http://schemas.xmlsoap.org/wsdl/"
+    name="Maho" targetNamespace="urn:Maho">
+    <types>
+        <schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:Maho">
+            <complexType name="salesOrderAddressEntity">
+                <all>
+                    <element name="cod_fisc" type="xsd:string" minOccurs="0" />
+                    <element name="email_pec" type="xsd:string" minOccurs="0" />
+                    <element name="cod_sdi" type="xsd:string" minOccurs="0" />
+                </all>
+            </complexType>
+            <complexType name="customerAddressEntityItem">
+                <all>
+                    <element name="cod_fisc" type="xsd:string" minOccurs="0" />
+                    <element name="email_pec" type="xsd:string" minOccurs="0" />
+                    <element name="cod_sdi" type="xsd:string" minOccurs="0" />
+                </all>
+            </complexType>
+            <complexType name="customerAddressEntityCreate">
+                <all>
+                    <element name="cod_fisc" type="xsd:string" minOccurs="0" />
+                    <element name="email_pec" type="xsd:string" minOccurs="0" />
+                    <element name="cod_sdi" type="xsd:string" minOccurs="0" />
+                </all>
+            </complexType>
+        </schema>
+    </types>
+</definitions>

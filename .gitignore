@@ -6,3 +6,5 @@ composer.lock
 .vscode/
 var/
 .phpunit.result.cache
+/app/etc/local.xml
+/app/etc/local.xml.bak

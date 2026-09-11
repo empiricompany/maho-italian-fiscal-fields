@@ -132,11 +132,46 @@ T: {{var telephone}}
 
 </details>
 
+## APIs
+
+The fiscal fields are exposed on **every Maho API surface** — REST v2 (API Platform), GraphQL, SOAP v1, SOAP v2 (WSI-compliant included), XML-RPC and JSON-RPC:
+
+| API | Where the fields appear |
+| --- | --- |
+| REST v2 / GraphQL | `billingAddress.extensions.italianFiscalFields` and `shippingAddress.extensions.italianFiscalFields` on the `Order` resource (`codFisc`, `emailPec`, `codSdi`) |
+| SOAP v1 / SOAP v2 / WSI | `cod_fisc`, `email_pec`, `cod_sdi` elements added to `salesOrderAddressEntity`, `customerAddressEntityItem` and `customerAddressEntityCreate` in the module's `wsdl.xml` / `wsi.xml` |
+| XML-RPC / JSON-RPC | The address attributes are returned by `customer_address.info` / `customer_address.list` and accepted on `customer_address.create` / `customer_address.update` |
+
+Example response from `GET /api/rest/v2/orders/{id}`:
+
+```json
+"billingAddress": {
+    "firstname": "Luca",
+    "lastname": "Bianchi",
+    "company": "Acme Srl",
+    "vatId": "IT01234567890",
+    "extensions": {
+        "italianFiscalFields": {
+            "codFisc": "BNCLCA85M01H501Z",
+            "emailPec": "acme@pec.example.it",
+            "codSdi": "ABCDE12"
+        }
+    }
+}
+```
+
+### Known core limitations
+
+- `GET /api/rest/v2/customers/{id}` and `/customers/me` do not populate `addresses[*].extensions` yet: the core `CustomerProvider` does not dispatch `api_customer_dto_build` on the item endpoint (it does on the search/list endpoint). Tracked as an upstream core gap.
+- The SOAP server loads its own WSDL by URL, which fails with self-signed certificates / non-standard ports even when the store is served on port 443. Also an upstream core limitation, unrelated to this module.
+
 ## Development
 
 This module ships with the standard Maho CI gates:
 
 - **PHPUnit** — `composer test` (bootstraps Maho from the module's own vendor)
+- **API test suite** — `composer test:db` runs `tests/ApiFiscalFieldsTest.php` against a throwaway SQLite install and asserts the fiscal fields on every API surface: REST v2 order/customer DTOs, GraphQL, SOAP v1/v2 WSDL complex types, XML-RPC and JSON-RPC address read/write
+- **API end-to-end script** — `tests/e2e-api-check.sh` exercises a live store over HTTP (OAuth2 token, REST v2, XML-RPC, JSON-RPC, SOAP WSDL); read-only, configurable via environment variables (`BASE_URL`, `CLIENT_ID`, `CLIENT_SECRET`, `ORDER_ENTITY_ID`, `CUSTOMER_EMAIL`, …), exit code 0 when no unexpected failures occur (known core gaps are reported separately)
 - **PHPStan** (level 8) — `composer phpstan`
 - **Rector** (dry-run) — `composer rector`
 - **PHP CS Fixer** (dry-run) — `composer cs` (or `composer cs-fix` to apply)

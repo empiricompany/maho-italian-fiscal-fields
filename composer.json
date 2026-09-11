@@ -26,6 +26,7 @@
     },
     "scripts": {
         "test": "vendor/bin/phpunit",
+        "test:db": "php tests/run-with-test-db.php",
         "cs": "vendor/bin/php-cs-fixer fix --dry-run --diff",
         "cs-fix": "vendor/bin/php-cs-fixer fix",
         "phpstan": "vendor/bin/phpstan analyse",
