@@ -14,7 +14,6 @@ $usedInForms = [
     'adminhtml_customer_address',
     'customer_address_edit',
     'customer_register_address',
-    'customer_account_create',
 ];
 
 $fiscalAttributes = [
@@ -30,19 +29,22 @@ foreach ($fiscalAttributes as $code => $label) {
         'input' => 'text',
         'required' => 0,
         'sort_order' => 120,
-        'is_visible' => 1,
-        'is_system' => 0,
-        'is_user_defined' => 1,
         'position' => 120,
+        'visible' => 1,
+        'system' => 1,
+        'user_defined' => 0,
     ]);
 
-    $attribute = Mage::getSingleton('eav/config')
-        ->getAttribute('customer_address', $code);
-    if (!$attribute) {
+    // eav/config cannot see the row just inserted by addAttribute(): read the id back.
+    $attributeId = (int) $installer->getAttributeId('customer_address', $code);
+    if (!$attributeId) {
         continue;
     }
-    $attribute->setData('used_in_forms', $usedInForms);
-    $attribute->save();
+
+    Mage::getModel('customer/attribute')
+        ->load($attributeId)
+        ->setData('used_in_forms', $usedInForms)
+        ->save();
 }
 
 $installer->endSetup();
