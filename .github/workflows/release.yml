@@ -1,0 +1,37 @@
+name: Release
+
+on:
+    push:
+        tags:
+            # Tags are plain semantic versions (e.g. 1.0.0), without the "v" prefix.
+            - '[0-9]*'
+
+jobs:
+    release:
+        runs-on: ubuntu-latest
+        permissions:
+            contents: write
+
+        steps:
+            - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+
+            - name: Create release
+              uses: softprops/action-gh-release@efb35369e0ad2afab669f228072c1b0d510eae64  # v3.0.3
+              with:
+                  generate_release_notes: true
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+            # The generated notes only list merged pull requests, so the upgrade
+            # notes are written in the annotated tag message and prepended here.
+            - name: Prepend the annotated tag notes
+              env:
+                  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              run: |
+                  annotation="$(git for-each-ref --format='%(contents)' "refs/tags/${GITHUB_REF_NAME}")"
+                  if [ -z "${annotation}" ]; then
+                      echo "No annotated tag message: keeping the generated notes as-is."
+                      exit 0
+                  fi
+                  printf '%s\n\n%s\n' "${annotation}" "$(gh release view "${GITHUB_REF_NAME}" --json body -q .body)" > /tmp/release-notes.md
+                  gh release edit "${GITHUB_REF_NAME}" --notes-file /tmp/release-notes.md
